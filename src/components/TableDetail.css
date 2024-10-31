@@ -1,0 +1,162 @@
+.product-menu {
+  margin-top: 20px;
+}
+
+.product-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.product-item span {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-controls button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.quantity-controls span {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.quantity-controls button:hover {
+  background-color: #0056b3;
+}
+
+/* Edit Mode - Controls for increasing/decreasing orders */
+.edit-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-controls button {
+  padding: 5px 10px;
+  background-color: #dc3545; /* Red color for edit controls */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-controls button:hover {
+  background-color: #c82333;
+}
+
+.product-item button {
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-item button:hover {
+  background-color: #218838;
+}
+
+/* Button styling for Save Changes and Edit Orders */
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.add-all-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.add-all-btn:hover {
+  background-color: #0056b3;
+}
+.product-menu {
+  display: flex;
+  flex-direction: column; /* Stacks the subcategory container vertically */
+}
+
+.subcategory-container {
+  display: flex; /* Aligns the subcategories horizontally */
+  flex-wrap: wrap; /* Allows wrapping to the next line if space is insufficient */
+  gap: 15px; /* Adds space between cards */
+}
+
+.subcategory-card {
+  border: 1px solid #ccc; /* Border around the card */
+  border-radius: 8px; /* Rounded corners */
+  padding: 10px; /* Padding inside the card */
+  background-color: #f9f9f9; /* Background color of the card */
+  width: 200px; /* Fixed width for each card */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for card effect */
+  transition: transform 0.2s; /* Transition effect on hover */
+}
+
+.subcategory-card:hover {
+  transform: scale(1.05); /* Slightly enlarge the card on hover */
+}
+
+.subcategory-button {
+  font-weight: bold; /* Make the subcategory name bold */
+  background: none; /* Remove default button styling */
+  border: none; /* Remove default button border */
+  color: #333; /* Text color */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.subcategory-products {
+  margin-top: 5px; /* Adds space between the button and products */
+  padding: 5px; /* Adds padding for products */
+  background-color: #fff; /* White background for products */
+  border: 1px solid #ddd; /* Light border around products */
+  border-radius: 4px; /* Slightly rounded corners for products */
+}
+
+.product-item {
+  display: flex; /* Aligns product name and quantity controls horizontally */
+  justify-content: space-between; /* Space between product name and controls */
+  margin: 5px 0; /* Space between products */
+}
+
+.quantity-controls {
+  display: flex; /* Aligns quantity controls horizontally */
+  align-items: center; /* Center vertically */
+}
+

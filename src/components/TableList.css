@@ -1,0 +1,113 @@
+/* TableList.css */
+
+
+.table-list-container {
+  display: flex;
+  background-color: #f9f9f9;
+  height: 100vh; /* Full viewport height */
+}
+
+.sidebar-open .table-list-content {
+  margin-left: 250px; /* Adjust this based on your sidebar width */
+}
+
+.table-list-content {
+  flex: 1;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.table-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+  gap: 20px; /* Space between table cards */
+}
+
+.table-card {
+  background-color: #f4f4f4; /* Default color for tables with no payment */
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height:156px;
+  width:156px;
+}
+
+.table-card.payment-due {
+  background-color: #f9d6d5; /* Color for tables with payments due */
+}
+.table-button {
+  background-color: #f4f4f4;
+  color: #000000;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.payment-button {
+  background-color: #218838;
+  color: #ffff;
+  border: none;
+  padding: 10px 20px;
+  margin-top:80px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 156px;
+}
+
+.payment-button:hover {
+  background-color: #218838;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.save-payment-button, .close-modal-button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.save-payment-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.close-modal-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.save-payment-button:hover {
+  background-color: #218838;
+}
+
+.close-modal-button:hover {
+  background-color: #c82333;
+}
+
