@@ -189,7 +189,7 @@ const StockManagementForm = () => {
         <input
           type="number"
           value={currentQuantity}
-          readOnly
+         
         />
 
         {/* Quantity to add */}

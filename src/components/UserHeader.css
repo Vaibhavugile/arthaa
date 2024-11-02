@@ -28,7 +28,15 @@
     left: 0; /* Adjust position when sidebar is open */
   }
   
-  .menu-button {
+  .header2 .menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-color: #f8f9fa;
+  }
+  .header2.menu-button :hover{
+    background-color: #f8f9fa;
+    color: #f8f9fa;
     background: none;
     border: none;
     cursor: pointer;

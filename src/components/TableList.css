@@ -40,7 +40,16 @@ h2 {
 .table-card.payment-due {
   background-color: #f9d6d5; /* Color for tables with payments due */
 }
-.table-button {
+.table-button1 {
+  background-color: #f4f4f4;
+  color: #000000;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.table-button1 :hover{
   background-color: #f4f4f4;
   color: #000000;
   border: none;

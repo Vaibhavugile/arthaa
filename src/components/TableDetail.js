@@ -121,6 +121,14 @@ const TableDetail = () => {
         setTable({ id: tableDoc.id, ...tableDoc.data() });
         setOrderChanges(updatedOrders);
       }
+      const resetQuantities = products.reduce((acc, product) => {
+        acc[product.id] = 0;
+        return acc;
+      }, {});
+      setProductQuantities(resetQuantities);
+  
+      // Hide the menu
+      setShowMenu(false);
     } catch (error) {
       console.error('Error adding products: ', error);
     }
@@ -209,30 +217,33 @@ const TableDetail = () => {
           {showMenu && (
   <div className="product-menu">
 
-    <div className="subcategory-container">
-    
-      {Object.keys(groupedProducts).map((subcategory) => (
-        <div key={subcategory} className="subcategory-card">
-          <button className="subcategory-button" onClick={() => toggleSubcategory(subcategory)}>
-            {subcategory}
-          </button>
-          {expandedSubcategory === subcategory && (
-            <div className="subcategory-products">
-              {groupedProducts[subcategory].map(product => (
-                <div key={product.id} className="product-item">
-                  <span>{product.name} - ₹{product.price}</span>
-                  <div className="quantity-controls">
-                    <button onClick={() => handleQuantityChange(product.id, -1)}>-</button>
-                    <span>{productQuantities[product.id]}</span>
-                    <button onClick={() => handleQuantityChange(product.id, +1)}>+</button>
-                  </div>
-                </div>
-              ))}
+<div className="subcategory-container">
+  {Object.keys(groupedProducts).map((subcategory) => (
+    <div 
+      key={subcategory} 
+      className={`subcategory-card ${expandedSubcategory === subcategory ? 'expanded' : ''}`}
+      onClick={() => toggleSubcategory(subcategory)}
+    >
+      <div className="subcategory-title">
+        {subcategory}
+      </div>
+      {expandedSubcategory === subcategory && (
+        <div className="subcategory-products">
+          {groupedProducts[subcategory].map(product => (
+            <div key={product.id} className="product-item">
+              <span>{product.name} - ₹{product.price}</span>
+              <div className="quantity-controls">
+                <button onClick={(e) => { e.stopPropagation(); handleQuantityChange(product.id, -1); }}>-</button>
+                <span>{productQuantities[product.id]}</span>
+                <button onClick={(e) => { e.stopPropagation(); handleQuantityChange(product.id, +1); }}>+</button>
+              </div>
             </div>
-          )}
+          ))}
         </div>
-      ))}
+      )}
     </div>
+  ))}
+</div>
 
     
   </div>

@@ -19,6 +19,7 @@ const TableList = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false); 
   const [branchCode, setBranchCode] = useState(''); // Store branch code
   const { userData } = useUser(); // Get user data from context
+  const [showBill, setShowBill] = useState(false);
 
 
   const handleSidebarToggle = () => {
@@ -182,6 +183,11 @@ const TableList = () => {
       alert('Please select a payment method and status');
     }
   };
+    const handlePrint = () => {
+    window.print(); // This will trigger the print dialog
+    setShowBill(false); // Hide the bill after printing
+  };
+
 
   return (
     <div className={`table-list-container ${sidebarOpen ? 'sidebar-open' : ''}`}>
@@ -196,14 +202,17 @@ const TableList = () => {
             const cardClass = totalPrice > 0 ? 'table-card payment-due' : 'table-card';
 
             return (
-              <div key={table.id} className={cardClass}>
-                <Link to={`/table/${table.id}`}>
-                  <button className="table-button">{table.tableNumber}</button>
-                </Link>
-                <button className="payment-button" onClick={() => handleOpenPaymentModal(table)}>
-                  Pay {totalPrice.toFixed(2)}
-                </button>
-              </div>
+              <Link to={`/table/${table.id}`} key={table.id} className={cardClass}>
+                <div>
+                  <button className="table-button1">{table.tableNumber}</button>
+                  <button className="payment-button" onClick={(e) => {
+                    e.preventDefault(); // Prevents the Link from navigating when clicking the payment button
+                    handleOpenPaymentModal(table);
+                  }}>
+                    Pay {totalPrice.toFixed(2)}
+                  </button>
+                </div>
+              </Link>
             );
           })}
         </div>
@@ -215,13 +224,13 @@ const TableList = () => {
 
               {selectedTable.orders.length > 0 ? (
                 <>
-                  <p>Total Price: ₹{calculateTotalPrice(selectedTable.orders)}</p>
+                  <p>Total Price: ${calculateTotalPrice(selectedTable.orders)}</p>
 
                   <h4>Order Summary:</h4>
                   <ul>
                     {selectedTable.orders.map((order, index) => (
                       <li key={index}>
-                        {order.quantity} x {order.name} - ₹{order.price * order.quantity}
+                        {order.quantity} x {order.name} - ${order.price * order.quantity}
                       </li>
                     ))}
                   </ul>
@@ -264,7 +273,10 @@ const TableList = () => {
                   <button onClick={handleClosePaymentModal}>Cancel</button>
                 </>
               ) : (
-                <p>No orders to display.</p>
+                <p>No orders to display.
+                   <button onClick={handleClosePaymentModal}>Cancel</button>
+                </p>
+               
               )}
             </div>
           </div>

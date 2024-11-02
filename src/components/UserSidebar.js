@@ -11,7 +11,7 @@ const UserSidebar = ({isOpen}) => {
       <nav>
         <ul>
           <li className="sidebar-greeting1">Welcome User,</li>
-          <li className="sidebar-greeting">Leads</li>
+         
 
           <li className={`sidebar-link ${location.pathname === '/usersidebar/billing' ? 'active' : ''}`}>
             <Link to="/usersidebar/billing" >
@@ -43,7 +43,7 @@ const UserSidebar = ({isOpen}) => {
              Order Report</Link>
           </li>
 
-          <li className={`sidebar-link ${location.pathname === '/report/order' ? 'active' : ''}`}>
+          <li className={`sidebar-link ${location.pathname === '/report/payments' ? 'active' : ''}`}>
             <Link to="/report/payments"> 
              Payment Report</Link>
           </li>

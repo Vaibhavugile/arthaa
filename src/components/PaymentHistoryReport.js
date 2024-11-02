@@ -147,7 +147,7 @@ const PaymentHistoryReport = () => {
                     >
                      ₹{typeof entry.total === 'number' ? entry.total.toFixed(2) : parseFloat(entry.total).toFixed(2)}
                     </td>
-                    <td>${entry.discountedTotal ? entry.discountedTotal.toFixed(2) : 'N/A'}</td> {/* Display Discounted Total */}
+                    <td>₹{entry.discountedTotal ? entry.discountedTotal.toFixed(2) : 'N/A'}</td> {/* Display Discounted Total */}
                     <td>{entry.method || 'N/A'}</td>
                     <td>{entry.status || 'N/A'}</td>
                     <td>{entry.responsible || 'N/A'}</td>

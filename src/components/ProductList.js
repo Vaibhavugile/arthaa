@@ -63,7 +63,7 @@ const ProductList = () => {
 
         <div className="action-buttons">
         <button onClick={handleAddProduct}>
-            <FaPlus /> Add Inventory Item
+            <FaPlus /> Add New Product
           </button>
           
           

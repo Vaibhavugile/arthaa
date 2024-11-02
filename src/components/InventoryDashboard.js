@@ -78,6 +78,7 @@ const InventoryDashboard = () => {
           <button onClick={handleAddInventory}>
             <FaPlus /> Add Inventory Item
           </button>
+          <br></br>
           <button onClick={handleAddStock}>
             <FaPlus /> Update Stock
           </button>
