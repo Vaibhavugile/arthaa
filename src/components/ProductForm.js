@@ -15,7 +15,9 @@ const ProductForm = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [branchCode, setBranchCode] = useState('');
   const { userData } = useUser();
-
+  
+  const [filteredSubcategories, setFilteredSubcategories] = useState([]);
+  const [allSubcategories, setAllSubcategories] = useState([]);
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -39,6 +41,13 @@ const ProductForm = () => {
       }));
       setAllIngredients(ingredientsList);
     };
+    const fetchSubcategories = async () => {
+      const q = query(collection(db, 'products'), where('branchCode', '==', userData.branchCode));
+      const snapshot = await getDocs(q);
+      const subcategoriesList = [...new Set(snapshot.docs.map(doc => doc.data().subcategory))];
+      setAllSubcategories(subcategoriesList);
+    };
+    fetchSubcategories();
 
     fetchIngredients();
   }, [userData.branchCode]);
@@ -51,6 +60,21 @@ const ProductForm = () => {
     const newIngredients = [...ingredients];
     newIngredients[index][field] = value;
     setIngredients(newIngredients);
+  };
+
+  const handleSubcategoryChange = (e) => {
+    const value = e.target.value;
+    setSubcategory(value);
+    
+    const filtered = allSubcategories.filter((sub) =>
+      sub.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredSubcategories(filtered);
+  };
+
+  const handleSubcategorySelect = (subcategory) => {
+    setSubcategory(subcategory);
+    setFilteredSubcategories([]);
   };
 
   const handleSubmit = async (e) => {
@@ -97,14 +121,25 @@ const ProductForm = () => {
             required
             className="product-form-input"
           />
-          <input
-            type="text"
-            value={subcategory}
-            onChange={(e) => setSubcategory(e.target.value)}
-            placeholder="Subcategory"
-            required
-            className="product-form-input"
-          />
+           <div className="subcategory-autocomplete">
+            <input
+              type="text"
+              value={subcategory}
+              onChange={handleSubcategoryChange}
+              placeholder="Subcategory"
+              required
+              className="product-form-input"
+            />
+            {filteredSubcategories.length > 0 && (
+              <ul className="subcategory-suggestions">
+                {filteredSubcategories.map((sub, index) => (
+                  <li key={index} onClick={() => handleSubcategorySelect(sub)}>
+                    {sub}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <h3 className="ingredients-title">Ingredients</h3>
           {ingredients.map((ingredient, index) => (
             <div key={index} className="ingredient-field">

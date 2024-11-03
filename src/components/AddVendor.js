@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useUser } from './Auth/UserContext';
+import './AddVendor.css'; // Import the CSS file
 
 const VendorForm = () => {
   const [name, setName] = useState('');
@@ -94,10 +95,11 @@ const VendorForm = () => {
   };
 
   return (
-    <div>
-      <h2>Add New Vendor</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="vendor-form">
+      <h2 className="vendor-form__title">Add New Vendor</h2>
+      <form className="vendor-form__form" onSubmit={handleSubmit}>
         <input
+          className="vendor-form__input"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -105,6 +107,7 @@ const VendorForm = () => {
           required
         />
         <input
+          className="vendor-form__input"
           type="text"
           value={contactNo}
           onChange={(e) => setContactNo(e.target.value)}
@@ -112,6 +115,7 @@ const VendorForm = () => {
           required
         />
         <input
+          className="vendor-form__input"
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
@@ -119,11 +123,12 @@ const VendorForm = () => {
           required
         />
 
-        <h3>Categories Supplied</h3>
+        <h3 className="vendor-form__category-title">Categories Supplied</h3>
         {categories.map((category) => (
           <div key={category}>
-            <label>
+            <label className="vendor-form__label">
               <input
+                className="vendor-form__checkbox"
                 type="checkbox"
                 checked={selectedCategories.includes(category)}
                 onChange={() => handleCategoryChange(category)}
@@ -134,11 +139,12 @@ const VendorForm = () => {
             {/* Show items only if category is selected */}
             {selectedCategories.includes(category) && (
               <div style={{ marginLeft: '20px' }}>
-                <h4>Items in {category}</h4>
+                <h4 className="vendor-form__item-title">Items in {category}</h4>
                 {itemsByCategory[category].map(item => (
                   <div key={item.id}>
-                    <label>
+                    <label className="vendor-form__label">
                       <input
+                        className="vendor-form__checkbox"
                         type="checkbox"
                         checked={
                           selectedItems[category] &&
@@ -155,7 +161,7 @@ const VendorForm = () => {
           </div>
         ))}
 
-        <button type="submit">Add Vendor</button>
+        <button className="vendor-form__button" type="submit">Add Vendor</button>
       </form>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, doc, getDocs, updateDoc, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useUser } from './Auth/UserContext';
-
+import "./AddStock.css"
 const StockManagementForm = () => {
   const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState('');
@@ -73,6 +73,7 @@ const StockManagementForm = () => {
 
   // Add a stock entry to the list
   const handleAddStockEntry = () => {
+    const newQuantity = parseInt(currentQuantity) + parseInt(quantityToAdd);
     const newStockEntry = {
       selectedVendor,
       invoiceDate,
@@ -80,7 +81,7 @@ const StockManagementForm = () => {
       selectedItem,
       quantityToAdd,
       price,
-      currentQuantity,
+      currentQuantity:newQuantity,
     };
     setStockEntries([...stockEntries, newStockEntry]);
     
@@ -89,7 +90,7 @@ const StockManagementForm = () => {
     setSelectedItem('');
     setQuantityToAdd('');
     setPrice('');
-    setCurrentQuantity(0);
+    setCurrentQuantity(newQuantity);
   };
 
   // Handle form submission to save multiple stock entries
@@ -101,8 +102,8 @@ const StockManagementForm = () => {
       for (let entry of stockEntries) {
         const itemRef = doc(db, 'Inventory', entry.selectedItem);
         const vendorRef = doc(db, 'Vendors', entry.selectedVendor);
-        const newQuantity = parseInt(entry.currentQuantity) + parseInt(entry.quantityToAdd);
-
+       
+        const newQuantity = entry.currentQuantity; // Use the updated current quantity from stock entries
         // Save the transaction in the vendor's Stock subcollection
         await addDoc(collection(vendorRef, 'Stock'), {
           invoiceDate: entry.invoiceDate,
@@ -129,107 +130,104 @@ const StockManagementForm = () => {
   };
 
   return (
-    <div>
-      <h2>Stock Management</h2>
-      <form onSubmit={handleSubmit}>
-        {/* Vendor selection */}
-        <label>Vendor:</label>
-        <select value={selectedVendor} onChange={(e) => setSelectedVendor(e.target.value)} required>
-          <option value="">Select Vendor</option>
-          {vendors.map((vendor) => (
-            <option key={vendor.id} value={vendor.id}>
-              {vendor.name}
-            </option>
-          ))}
-        </select>
+    <div className="stock-management-container">
+    <h2>Stock Management</h2>
+    <form onSubmit={handleSubmit}>
+      {/* Vendor selection */}
+      <label>Vendor:</label>
+      <select value={selectedVendor} onChange={(e) => setSelectedVendor(e.target.value)} required>
+        <option value="">Select Vendor</option>
+        {vendors.map((vendor) => (
+          <option key={vendor.id} value={vendor.id}>
+            {vendor.name}
+          </option>
+        ))}
+      </select>
 
-        {/* Invoice date */}
-        <label>Invoice Date:</label>
-        <input
-          type="date"
-          value={invoiceDate}
-          onChange={(e) => setInvoiceDate(e.target.value)}
-          required
-        />
+      {/* Invoice date */}
+      <label>Invoice Date:</label>
+      <input
+        type="date"
+        value={invoiceDate}
+        onChange={(e) => setInvoiceDate(e.target.value)}
+        required
+      />
 
-        {/* Category selection */}
-        <label>Category:</label>
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          disabled={!selectedVendor}
-          
-        >
-          <option value="">Select Category</option>
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
+      {/* Category selection */}
+      <label>Category:</label>
+      <select
+        value={selectedCategory}
+        onChange={(e) => setSelectedCategory(e.target.value)}
+        disabled={!selectedVendor}
+      >
+        <option value="">Select Category</option>
+        {categories.map((category) => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
 
-        {/* Item selection */}
-        <label>Item:</label>
-        <select
-          value={selectedItem}
-          onChange={(e) => setSelectedItem(e.target.value)}
-          disabled={!selectedCategory}
-         
-        >
-          <option value="">Select Item</option>
-          {items.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.ingredientName}
-            </option>
-          ))}
-        </select>
+      {/* Item selection */}
+      <label>Item:</label>
+      <select
+        value={selectedItem}
+        onChange={(e) => setSelectedItem(e.target.value)}
+        disabled={!selectedCategory}
+      >
+        <option value="">Select Item</option>
+        {items.map((item) => (
+          <option key={item.id} value={item.id}>
+            {item.ingredientName}
+          </option>
+        ))}
+      </select>
 
-        {/* Current quantity display */}
-        <label>Current Quantity:</label>
-        <input
-          type="number"
-          value={currentQuantity}
-         
-        />
+      {/* Current quantity display */}
+      <label>Current Quantity:</label>
+      <input
+        type="number"
+        value={currentQuantity}
+        onChange={(e) => setCurrentQuantity(e.target.value)} // Allow editing of current quantity
+      />
 
-        {/* Quantity to add */}
-        <label>Quantity to Add:</label>
-        <input
-          type="number"
-          value={quantityToAdd}
-          onChange={(e) => setQuantityToAdd(e.target.value)}
-          
-        />
+      {/* Quantity to add */}
+      <label>Quantity to Add:</label>
+      <input
+        type="number"
+        value={quantityToAdd}
+        onChange={(e) => setQuantityToAdd(e.target.value)}
+      />
 
-        {/* Price */}
-        <label>Price:</label>
-        <input
-          type="number"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          
-        />
+      {/* Price */}
+      <label>Price:</label>
+      <input
+        type="number"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
 
-        <button type="button" onClick={handleAddStockEntry}>Add Stock Entry</button>
+      <button type="button" onClick={handleAddStockEntry}>Add Stock Entry</button>
 
-        {/* Display added stock entries */}
-        <h3>Stock Entries to Submit:</h3>
-        <ul>
-          {stockEntries.map((entry, index) => (
-            <li key={index}>
-              Vendor: {vendors.find(v => v.id === entry.selectedVendor)?.name}, 
-              Category: {entry.selectedCategory}, 
-              Item: {items.find(i => i.id === entry.selectedItem)?.ingredientName}, 
-              Quantity to Add: {entry.quantityToAdd}, 
-              Price: {entry.price}
-            </li>
-          ))}
-        </ul>
+      {/* Display added stock entries */}
+      <h3>Stock Entries to Submit:</h3>
+      <ul>
+        {stockEntries.map((entry, index) => (
+          <li key={index}>
+            <span>Vendor: {vendors.find(v => v.id === entry.selectedVendor)?.name}</span>
+            <span>Category: {entry.selectedCategory}</span>
+            <span>Item: {items.find(i => i.id === entry.selectedItem)?.ingredientName}</span>
+            <span>Quantity to Add: {entry.quantityToAdd}</span>
+            <span>Price: {entry.price}</span>
+          </li>
+        ))}
+      </ul>
 
-        <button type="submit">Submit All Stock Entries</button>
-      </form>
-    </div>
-  );
+      <button type="submit">Submit All Stock Entries</button>
+    </form>
+  </div>
+);
+        
 };
 
 export default StockManagementForm;

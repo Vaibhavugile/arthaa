@@ -26,6 +26,7 @@
   }
   
   .product-form-input,
+  
   .ingredient-quantity-input,
   .ingredient-select {
     padding: 10px;
@@ -65,4 +66,6 @@
   .submit-product-button:hover {
     background-color: #218838;
   }
+
+  
   
