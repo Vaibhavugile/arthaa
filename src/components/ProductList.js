@@ -47,7 +47,7 @@ const ProductList = () => {
     // Logic to navigate to Add Product page
   };
   const handleEdit = (id) => {
-    navigate(`/editinventory/${id}`);
+    navigate(`/editproduct/${id}`);
   };
   const handleAddProduct= () => {
     navigate('/add-product');

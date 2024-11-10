@@ -1,21 +1,155 @@
-.product-menu {
-  margin-top: 20px;
+.table-detail-container {
+  display: flex; /* Set to flex to align children in a row */
+  padding: 20px;
+  background-color: #f4f4f4;
+  height: 100vh;
+  gap: 20px; /* Space between containers */
+}
+.orders-container {
+   
+  position: fixed;
+  top: 10%; 
+  right: 0%;
+  width: calc(25%);
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.product-item {
+.orders-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.orders-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.orders-container li {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1rem;
+}
+
+.orders-container li:last-child {
+  border-bottom: none;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-item span {
+  font-weight: 500;
+}
+
+.edit-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.edit-controls button {
+  background-color: #ff6b6b;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.edit-controls button:hover {
+  background-color: #ff4c4c;
+}
+
+.edit-controls button:active {
+  background-color: #ff3333;
+}
+
+.order-quantity,
+.order-price {
+  font-weight: 600;
+}
+
+.order-quantity {
+  margin-right: 8px;
+}
+
+
+.sidebar-menu {
+  width: 250px;
   background-color: #f9f9f9;
+  color: black;
+  padding: 15px;
+  border-radius: 8px;
+  margin-right: 20px;
+  height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.sidebar-subcategories {
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+}
+
+.subcategory {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background-color: #f0f0f0; 
+}
+
+.subcategory:hover {
+  background-color: #f0f0f0; 
+}
+
+.products-container {
+   /* Allow container to take available space */
+  padding: 20px;
+  width :calc(63% );
+  display: flex;
+  flex-wrap: wrap; /* Arrange product cards flexibly */
+  gap: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.orders-container {
+  flex: 1; /* Allow container to take available space */
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.product-card {
   border: 1px solid #ddd;
   border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.product-item span {
-  font-size: 16px;
-  font-weight: bold;
+  padding: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  width:fit-content;
+  height: fit-content;
+  
 }
 
 .quantity-controls {
@@ -24,139 +158,29 @@
 }
 
 .quantity-controls button {
-  padding: 5px 10px;
+  border: none;
   background-color: #007bff;
   color: white;
-  border: none;
+  padding: 5px 10px;
   border-radius: 5px;
-  margin: 0 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.quantity-controls span {
-  font-size: 16px;
-  font-weight: bold;
+  margin: 0 5px;
 }
 
 .quantity-controls button:hover {
   background-color: #0056b3;
 }
 
-/* Edit Mode - Controls for increasing/decreasing orders */
-.edit-controls {
-  display: flex;
-  gap: 10px;
-}
-
-.edit-controls button {
-  padding: 5px 10px;
-  background-color: #dc3545; /* Red color for edit controls */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.edit-controls button:hover {
-  background-color: #c82333;
-}
-
-.product-item button {
-  padding: 5px 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.product-item button:hover {
-  background-color: #218838;
-}
-
-/* Button styling for Save Changes and Edit Orders */
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #218838;
-}
-
 .add-all-btn {
-  padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #28a745;
   color: white;
+  padding: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 20px;
+  transition: background-color 0.2s;
 }
 
 .add-all-btn:hover {
-  background-color: #0056b3;
+  background-color: #218838;
 }
-.product-menu {
-  display: flex;
-  flex-direction: column; /* Stacks the subcategory container vertically */
-}
-
-.subcategory-container {
-  display: flex; /* Aligns the subcategories horizontally */
-  flex-wrap: wrap; /* Allows wrapping to the next line if space is insufficient */
-  gap: 15px; /* Adds space between cards */
-}
-
-.subcategory-card {
-  border: 1px solid #ccc; /* Border around the card */
-  border-radius: 8px; /* Rounded corners */
-  padding: 10px; /* Padding inside the card */
-  background-color: #f9f9f9; /* Background color of the card */
-  width: 200px; /* Fixed width for each card */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for card effect */
-  transition: transform 0.2s; /* Transition effect on hover */
-}
-
-.subcategory-card:hover {
-  transform: scale(1.05); /* Slightly enlarge the card on hover */
-}
-
-.subcategory-button {
-  font-weight: bold; /* Make the subcategory name bold */
-  background: none; /* Remove default button styling */
-  border: none; /* Remove default button border */
-  color: #333; /* Text color */
-  cursor: pointer; /* Pointer cursor on hover */
-}
-
-.subcategory-products {
-  margin-top: 5px; /* Adds space between the button and products */
-  padding: 5px; /* Adds padding for products */
-  background-color: #fff; /* White background for products */
-  border: 1px solid #ddd; /* Light border around products */
-  border-radius: 4px; /* Slightly rounded corners for products */
-}
-
-.product-item {
-  display: flex; /* Aligns product name and quantity controls horizontally */
-  justify-content: space-between; /* Space between product name and controls */
-  margin: 5px 0; /* Space between products */
-}
-
-.quantity-controls {
-  display: flex; /* Aligns quantity controls horizontally */
-  align-items: center; /* Center vertically */
-}
-
