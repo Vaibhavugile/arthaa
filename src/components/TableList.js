@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, doc, updateDoc, query, where, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import UserSidebar from './UserSidebar'; 
 import UserHeader from './UserHeader';    
 import './TableList.css';
 import { useUser } from './Auth/UserContext'; // Assuming you're using a UserContext for branchCode
+import { FaSearch, FaFilter, FaDownload, FaUpload, FaPlus, FaEdit, FaTrash, FaCopy } from 'react-icons/fa';
 
 
 const TableList = () => {
@@ -20,7 +21,7 @@ const TableList = () => {
   const [branchCode, setBranchCode] = useState(''); // Store branch code
   const { userData } = useUser(); // Get user data from context
   const [showBill, setShowBill] = useState(false);
-
+  const navigate = useNavigate();
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen); 
@@ -188,6 +189,10 @@ const TableList = () => {
     setShowBill(false); // Hide the bill after printing
   };
 
+  const handleAddProduct = () => {
+    navigate('/add-table');
+  };
+
 
   return (
     <div className={`table-list-container ${sidebarOpen ? 'sidebar-open' : ''}`}>
@@ -195,7 +200,14 @@ const TableList = () => {
       <div className="table-list-content">
         <UserHeader onMenuClick={handleSidebarToggle} isSidebarOpen={sidebarOpen} />
 
-        <h2>Tables</h2>
+        <h2 style={{ marginLeft: '10px', marginTop: '100px' }}>Tables</h2>
+        <div className="action-buttons">
+        <label className="add-product-button" onClick={handleAddProduct} >
+          <FaPlus />
+              Add Table
+        </label> 
+        </div>
+
         <div className="table-list">
           {tables.map(table => {
             const totalPrice = calculateTotalPrice(table.orders);
@@ -218,69 +230,125 @@ const TableList = () => {
         </div>
 
         {showPaymentModal && selectedTable && (
-          <div className="modal">
-            <div className="modal-content">
-              <h3>Payment for Table {selectedTable.tableNumber}</h3>
+  <div className="modal">
+    <div className="modal-content">
+      <h3>Payment for Table {selectedTable.tableNumber}</h3>
 
-              {selectedTable.orders.length > 0 ? (
-                <>
-                  <p>Total Price: ${calculateTotalPrice(selectedTable.orders)}</p>
+      {selectedTable.orders.length > 0 ? (
+        <>
+          <p>Total Price: ₹{calculateTotalPrice(selectedTable.orders)}</p>
 
-                  <h4>Order Summary:</h4>
-                  <ul>
-                    {selectedTable.orders.map((order, index) => (
-                      <li key={index}>
-                        {order.quantity} x {order.name} - ${order.price * order.quantity}
-                      </li>
-                    ))}
-                  </ul>
-                  <label>
-                    Discount Percentage:
-                    <input
-                      type="number"
-                      value={discountPercentage}
-                      onChange={(e) => setDiscountPercentage(e.target.value)}
-                    />
-                  </label>
-                  <div>
-                    <label>Payment Method:</label>
-                    <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
-                      <option value="">Select Method</option>
-                      <option value="Cash">Cash</option>
-                      <option value="Card">Card</option>
-                      <option value="UPI">UPI</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label>Payment Status:</label>
-                    <select value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value)}>
-                      <option value="">Select Status</option>
-                      <option value="Settled">Settled</option>
-                      <option value="Due">Due</option>
-                    </select>
-                  </div>
-                  {paymentStatus === 'Due' && (
-                    <div>
-                      <label>Responsible Person:</label>
-                      <input
-                        type="text"
-                        value={responsibleName}
-                        onChange={(e) => setResponsibleName(e.target.value)}
-                      />
-                    </div>
-                  )}
-                  <button onClick={handleSavePayment}>Save Payment</button>
-                  <button onClick={handleClosePaymentModal}>Cancel</button>
-                </>
-              ) : (
-                <p>No orders to display.
-                   <button onClick={handleClosePaymentModal}>Cancel</button>
-                </p>
-               
-              )}
+          <h4>Order Summary:</h4>
+          <ul>
+            {selectedTable.orders.map((order, index) => (
+              <li key={index}>
+                {order.quantity} x {order.name} - ₹{order.price * order.quantity}
+              </li>
+            ))}
+          </ul>
+          <label>
+            Discount Percentage:
+            <input
+              type="number"
+              value={discountPercentage}
+              onChange={(e) => setDiscountPercentage(e.target.value)}
+            />
+          </label>
+
+          <div>
+            <label>Payment Method:</label>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="Cash"
+                  checked={paymentMethod === "Cash"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+                Cash
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="Card"
+                  checked={paymentMethod === "Card"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+                Card
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="UPI"
+                  checked={paymentMethod === "UPI"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+                UPI
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="Due"
+                  checked={paymentMethod === "Due"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+                Due
+              </label>
             </div>
           </div>
-        )}
+
+          <div>
+            <label>Payment Status:</label>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name="paymentStatus"
+                  value="Settled"
+                  checked={paymentStatus === "Settled"}
+                  onChange={(e) => setPaymentStatus(e.target.value)}
+                />
+                Settled
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="paymentStatus"
+                  value="Due"
+                  checked={paymentStatus === "Due"}
+                  onChange={(e) => setPaymentStatus(e.target.value)}
+                />
+                Due
+              </label>
+            </div>
+          </div>
+
+          {paymentStatus === 'Due' && (
+            <div>
+              <label>Responsible Person:</label>
+              <input
+                type="text"
+                value={responsibleName}
+                onChange={(e) => setResponsibleName(e.target.value)}
+              />
+            </div>
+          )}
+
+          <button onClick={handleSavePayment}>Save Payment</button>
+          <button onClick={handleClosePaymentModal}>Cancel</button>
+        </>
+      ) : (
+        <p>No orders to display.
+          <button onClick={handleClosePaymentModal}>Cancel</button>
+        </p>
+      )}
+    </div>
+  </div>
+)}
       </div>
     </div>
   );

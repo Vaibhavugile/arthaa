@@ -325,7 +325,7 @@ disabled={loading}
     </div>
 
     <div className="sign-in-left">
-      <h1>The simplest way to manage your workforce</h1>
+      
     </div>
 
    

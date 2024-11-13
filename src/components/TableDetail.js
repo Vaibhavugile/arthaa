@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams ,useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import './TableDetail.css';
@@ -15,7 +15,7 @@ const TableDetail = () => {
   const { userData } = useUser();
   const [branchCode, setBranchCode] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchTable = async () => {
       const tableRef = doc(db, 'tables', tableId);
@@ -110,7 +110,9 @@ const TableDetail = () => {
   const handleSubcategoryClick = (subcategory) => {
     setSelectedSubcategory(subcategory);
   };
-
+  const handeCancle = () => {
+    navigate('/usersidebar/billing');
+  };
   return (
     <div className="table-detail-container">
       <div className="sidebar-menu">
@@ -127,6 +129,7 @@ const TableDetail = () => {
         {table ? (
           <div>
             <h2>Table: {table.tableNumber}</h2>
+            <button onClick={handeCancle}>Back To Tables</button>
             <div className="products-container">
               {selectedSubcategory && groupedProducts[selectedSubcategory]?.map(product => (
                 <div

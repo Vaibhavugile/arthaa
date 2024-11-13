@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
-import './Report.css';
+import './OrederReport.css';
 import UserSidebar from './UserSidebar';
 import UserHeader from './UserHeader';
 import { useUser } from './Auth/UserContext';
@@ -11,9 +11,10 @@ const OrdersReport = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [branchCode, setBranchCode] = useState('');
   const [totalReport, setTotalReport] = useState({ totalOrders: 0, grandTotal: 0 });
-  const [selectedDate, setSelectedDate] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
   const [topItems, setTopItems] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(''); // New state for search query
+  const [searchQuery, setSearchQuery] = useState('');
   const { userData } = useUser();
 
   useEffect(() => {
@@ -53,7 +54,6 @@ const OrdersReport = () => {
           const price = parseFloat(order.price) || 0;
           grandTotal += order.quantity * price;
 
-          // Track item frequency
           if (order.name in itemCounts) {
             itemCounts[order.name] += order.quantity;
           } else {
@@ -68,7 +68,6 @@ const OrdersReport = () => {
             const price = parseFloat(order.price) || 0;
             grandTotal += order.quantity * price;
 
-            // Track item frequency
             if (order.name in itemCounts) {
               itemCounts[order.name] += order.quantity;
             } else {
@@ -79,43 +78,50 @@ const OrdersReport = () => {
       }
     });
 
-    // Sort top items by frequency
     const topItemsArray = Object.entries(itemCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
     setTopItems(topItemsArray);
     setTotalReport({ totalOrders, grandTotal });
   };
 
   const handleSidebarToggle = () => setSidebarOpen(!sidebarOpen);
-  const handleDateChange = (e) => setSelectedDate(e.target.value);
-  const handleSearchChange = (e) => setSearchQuery(e.target.value.toLowerCase()); // Handle search input
+  const handleFromDateChange = (e) => setFromDate(e.target.value);
+  const handleToDateChange = (e) => setToDate(e.target.value);
+  const handleSearchChange = (e) => setSearchQuery(e.target.value.toLowerCase());
 
   return (
-    <div className={`report-container ₹{sidebarOpen ? 'sidebar-open' : ''}`}>
+    <div className={`report-container ${sidebarOpen ? 'sidebar-open' : ''}`}>
       <UserSidebar isOpen={sidebarOpen} onToggle={handleSidebarToggle} />
       <div className="report-content">
         <UserHeader onMenuClick={handleSidebarToggle} isSidebarOpen={sidebarOpen} />
 
-        <h2>Detailed Orders Report & Trends</h2>
+        <h2 style={{ marginLeft: '10px', marginTop: '100px' }}>Detailed Orders Report </h2>
 
-        {/* Summary and Trends Report */}
         <div className="report-summary">
           <h3>Summary Statistics</h3>
           <p><strong>Total Orders:</strong> {totalReport.totalOrders}</p>
           <p><strong>Grand Total Revenue:</strong> ₹{totalReport.grandTotal.toFixed(2)}</p>
         </div>
 
-        {/* Date Filter */}
         <div className="date-filter">
-          <label htmlFor="order-date">Filter by Date:</label>
+          <label htmlFor="from-date">From Date:</label>
           <input 
             type="date" 
-            id="order-date" 
-            value={selectedDate} 
-            onChange={handleDateChange} 
+            id="from-date" 
+            value={fromDate} 
+            onChange={handleFromDateChange} 
           />
         </div>
 
-        {/* Search Input for Product Name */}
+        <div className="date-filter">
+          <label htmlFor="to-date">To Date:</label>
+          <input 
+            type="date" 
+            id="to-date" 
+            value={toDate} 
+            onChange={handleToDateChange} 
+          />
+        </div>
+
         <div className="search-filter">
           <label htmlFor="product-search">Search by Product Name:</label>
           <input 
@@ -127,7 +133,6 @@ const OrdersReport = () => {
           />
         </div>
 
-        {/* Top Items */}
         <div className="top-items">
           <h3>Top 5 Most Ordered Items</h3>
           <ul>
@@ -139,86 +144,63 @@ const OrdersReport = () => {
           </ul>
         </div>
 
-        {/* Table Data */}
+        {/* Consolidated Table Data */}
         {tables.length > 0 ? (
-          tables.map(table => (
-            <div key={table.id} className="report-card">
-              <h3>Table {table.tableNumber}</h3>
-              {/* Summary for each table */}
-              <div className="table-summary">
-                <p><strong>Active Orders Total:</strong> ₹{table.orders?.reduce((acc, order) => acc + (order.quantity * parseFloat(order.price || 0)), 0).toFixed(2)}</p>
-                <p><strong>Order History Total:</strong> ₹{table.orderHistory?.reduce((acc, entry) => {
-                  return acc + entry.orders.reduce((sum, order) => sum + (order.quantity * parseFloat(order.price || 0)), 0);
-                }, 0).toFixed(2)}</p>
-              </div>
-
-              {/* Orders and Order History */}
-              <div className="order-section">
-                <h4>Current Orders</h4>
-                {Array.isArray(table.orders) && table.orders.length > 0 ? (
-                  <table className="order-table">
-                    <thead>
-                      <tr>
-                        <th>Quantity</th>
-                        <th>Item Name</th>
-                        <th>Price</th>
-                        <th>Total</th>
+          <table className="consolidated-table">
+            <thead>
+              <tr>
+                <th>Table Number</th>
+                <th>Order Date</th>
+                <th>Quantity</th>
+                <th>Item Name</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tables.map(table => (
+                <>
+                  {/* Current Orders */}
+                  {table.orders
+                    .filter(order => order.name.toLowerCase().includes(searchQuery))
+                    .map((order, index) => (
+                      <tr key={`${table.id}-order-${index}`}>
+                        <td>{table.tableNumber}</td>
+                        <td>-</td>
+                        <td>{order.quantity}</td>
+                        <td>{order.name}</td>
+                        <td>₹{parseFloat(order.price).toFixed(2)}</td>
+                        <td>₹{(order.quantity * parseFloat(order.price)).toFixed(2)}</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {table.orders
-                        .filter(order => order.name.toLowerCase().includes(searchQuery)) // Filter by search query
-                        .map((order, index) => (
-                          <tr key={index}>
+                    ))}
+
+                  {/* Order History */}
+                  {table.orderHistory
+                    .filter(historyEntry => {
+                      const timestamp = historyEntry.payment?.timestamp || '';
+                      return (
+                        (!fromDate || timestamp >= fromDate) &&
+                        (!toDate || timestamp <= toDate)
+                      );
+                    })
+                    .map((historyEntry, index) => (
+                      historyEntry.orders
+                        .filter(order => order.name.toLowerCase().includes(searchQuery))
+                        .map((order, i) => (
+                          <tr key={`${table.id}-history-${index}-${i}`}>
+                            <td>{table.tableNumber}</td>
+                            <td>{historyEntry.payment?.timestamp || 'N/A'}</td>
                             <td>{order.quantity}</td>
                             <td>{order.name}</td>
                             <td>₹{parseFloat(order.price).toFixed(2)}</td>
                             <td>₹{(order.quantity * parseFloat(order.price)).toFixed(2)}</td>
                           </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <p>No active orders.</p>
-                )}
-
-                <h4>Order History</h4>
-                {Array.isArray(table.orderHistory) && table.orderHistory.length > 0 ? (
-                  table.orderHistory
-                    .filter(historyEntry => !selectedDate || historyEntry.payment?.timestamp.startsWith(selectedDate))
-                    .map((historyEntry, index) => (
-                      <div key={index} className="order-history-entry">
-                        <p><strong>Order Timestamp:</strong> {historyEntry.payment?.timestamp || 'N/A'}</p>
-                        <table className="order-history-table">
-                          <thead>
-                            <tr>
-                              <th>Quantity</th>
-                              <th>Item Name</th>
-                              <th>Price</th>
-                              <th>Total</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {historyEntry.orders
-                              .filter(order => order.name.toLowerCase().includes(searchQuery)) // Filter by search query
-                              .map((order, i) => (
-                                <tr key={i}>
-                                  <td>{order.quantity}</td>
-                                  <td>{order.name}</td>
-                                  <td>₹{parseFloat(order.price).toFixed(2)}</td>
-                                  <td>₹{(order.quantity * parseFloat(order.price)).toFixed(2)}</td>
-                                </tr>
-                              ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    ))
-                ) : (
-                  <p>No order history available.</p>
-                )}
-              </div>
-            </div>
-          ))
+                        ))
+                    ))}
+                </>
+              ))}
+            </tbody>
+          </table>
         ) : (
           <p>Loading tables...</p>
         )}

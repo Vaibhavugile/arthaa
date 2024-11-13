@@ -32,8 +32,6 @@ const VendorPaymentDashboard = () => {
 
             const stockGroupedByDate = {};
             const totalPaymentPerDate = {};
-            const totalAmountPaid = 0; // Initialize total amount paid
-            const totalRemainingAmount = 0; // Initialize total remaining amount
 
             stockSnapshot.docs.forEach((stockDoc) => {
               const stockData = stockDoc.data();
@@ -103,7 +101,6 @@ const VendorPaymentDashboard = () => {
       remainingAmount: vendor.remainingAmount,
     });
 
-    // Optionally, show some confirmation
     alert('Amounts saved successfully!');
   };
 
@@ -115,9 +112,9 @@ const VendorPaymentDashboard = () => {
         <h2 style={{ marginLeft: '10px', marginTop: '100px' }}>Vendor Payment Dashboard</h2>
 
         <div className="action-buttons">
-          <button onClick={handleAddVendor} title="Add New Vendor">
+          <label className="add-product-button" onClick={handleAddVendor}>
             <FaPlus /> Add Vendor
-          </button>
+          </label>
         </div>
 
         <div className="table-container">
@@ -129,8 +126,6 @@ const VendorPaymentDashboard = () => {
                 <tr>
                   <th>Vendor Name</th>
                   <th>Total Payment</th>
-                  <th>Amount Paid</th>
-                  <th>Remaining Amount</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -141,32 +136,6 @@ const VendorPaymentDashboard = () => {
                       <td>{vendor.vendorName}</td>
                       <td>₹{vendor.totalPayment.toFixed(2)}</td>
                       <td>
-                        <input 
-                          type="number" 
-                          value={vendor.amountPaid} 
-                          onChange={(e) => {
-                            const updatedPayments = vendorPayments.map(v => 
-                              v.vendorId === vendor.vendorId ? { ...v, amountPaid: Number(e.target.value) } : v
-                            );
-                            setVendorPayments(updatedPayments);
-                          }} 
-                          placeholder="Amount Paid" 
-                        />
-                      </td>
-                      <td>
-                        <input 
-                          type="number" 
-                          value={vendor.remainingAmount} 
-                          onChange={(e) => {
-                            const updatedPayments = vendorPayments.map(v => 
-                              v.vendorId === vendor.vendorId ? { ...v, remainingAmount: Number(e.target.value) } : v
-                            );
-                            setVendorPayments(updatedPayments);
-                          }} 
-                          placeholder="Remaining Amount" 
-                        />
-                      </td>
-                      <td>
                         <button
                           className="edit-btn"
                           onClick={(e) => { 
@@ -176,16 +145,6 @@ const VendorPaymentDashboard = () => {
                           title="Edit Vendor"
                         >
                           <FaEdit />
-                        </button>
-                        <button 
-                          className="save-btn" 
-                          onClick={(e) => { 
-                            e.stopPropagation(); 
-                            handleSaveAmounts(vendor.vendorId); 
-                          }} 
-                          title="Save Amounts"
-                        >
-                          Save
                         </button>
                       </td>
                     </tr>
@@ -236,6 +195,40 @@ const VendorPaymentDashboard = () => {
                               ))}
                             </tbody>
                           </table>
+                          <div className="amount-details">
+                            <label>
+                              Amount Paid:
+                              <input
+                                type="number"
+                                value={vendor.amountPaid}
+                                onChange={(e) => {
+                                  const updatedPayments = vendorPayments.map((v) =>
+                                    v.vendorId === vendor.vendorId ? { ...v, amountPaid: Number(e.target.value) } : v
+                                  );
+                                  setVendorPayments(updatedPayments);
+                                }}
+                              />
+                            </label>
+                            <label>
+                              Remaining Amount:
+                              <input
+                                type="number"
+                                value={vendor.remainingAmount}
+                                onChange={(e) => {
+                                  const updatedPayments = vendorPayments.map((v) =>
+                                    v.vendorId === vendor.vendorId ? { ...v, remainingAmount: Number(e.target.value) } : v
+                                  );
+                                  setVendorPayments(updatedPayments);
+                                }}
+                              />
+                            </label>
+                            <button
+                              className="save-btn"
+                              onClick={() => handleSaveAmounts(vendor.vendorId)}
+                            >
+                              Save
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     )}

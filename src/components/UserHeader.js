@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import logo1 from '../assets/arlogo.jpg';
+import logo1 from '../assets/lll.png';
 import profileIcon from '../assets/Profile.png';
 import menuImage from '../assets/Menu.png';
 import './UserHeader.css';
@@ -21,13 +21,7 @@ const UserHeader = ({ onMenuClick, isSidebarOpen }) => {
       <div className="header2-logo">
         <img src={logo1} alt="Logo" />
       </div>
-      <div className="header2-profil">
-        <img
-          src={profileIcon}
-          alt="Profile"
-          onClick={() => navigate('/profile')} // Navigate to the profile page
-        />
-      </div>
+      
     </header>
   );
 };

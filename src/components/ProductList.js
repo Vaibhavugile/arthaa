@@ -62,9 +62,10 @@ const ProductList = () => {
         <h2 style={{ marginLeft: '10px', marginTop: '100px' }}>Product List</h2>
 
         <div className="action-buttons">
-        <button onClick={handleAddProduct}>
-            <FaPlus /> Add New Product
-          </button>
+        <label className="add-product-button" onClick={handleAddProduct}>
+          <FaPlus />
+              Add Product
+            </label> 
           
           
         </div>

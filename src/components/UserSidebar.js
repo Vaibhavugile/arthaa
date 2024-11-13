@@ -18,10 +18,7 @@ const UserSidebar = ({isOpen}) => {
                Billing </Link>
           </li>
 
-          <li className={`sidebar-link ${location.pathname === '/add-table' ? 'active' : ''}`}>
-            <Link to="/add-table" >
-              Add Table </Link>
-          </li>
+          
           
           
           <li className={`sidebar-link ${location.pathname === '/products' ? 'active' : ''}`}>
@@ -46,6 +43,10 @@ const UserSidebar = ({isOpen}) => {
           <li className={`sidebar-link ${location.pathname === '/report/payments' ? 'active' : ''}`}>
             <Link to="/report/payments"> 
              Payment Report</Link>
+          </li>
+          <li className={`sidebar-link ${location.pathname === '/report/dues' ? 'active' : ''}`}>
+            <Link to="/report/dues"> 
+             Due Payment Report</Link>
           </li>
           
           

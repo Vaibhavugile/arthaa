@@ -22,7 +22,7 @@
 .sign-in-left {
 
   flex: 0.5; /* 60% width */
-  background: url('../../assets/working_women.png') no-repeat center center;
+  background: url('../../assets/chef.jpg') no-repeat center center;
   background-size: cover;
   display: flex;
   flex-direction: column;

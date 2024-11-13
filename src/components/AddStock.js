@@ -96,14 +96,16 @@ const StockManagementForm = () => {
   // Handle form submission to save multiple stock entries
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       // Loop through each stock entry and update the inventory and vendor's stock subcollection
       for (let entry of stockEntries) {
         const itemRef = doc(db, 'Inventory', entry.selectedItem);
         const vendorRef = doc(db, 'Vendors', entry.selectedVendor);
-       
+        
         const newQuantity = entry.currentQuantity; // Use the updated current quantity from stock entries
+        const historyRef = collection(itemRef, 'History'); // Reference to the History subcollection
+  
         // Save the transaction in the vendor's Stock subcollection
         await addDoc(collection(vendorRef, 'Stock'), {
           invoiceDate: entry.invoiceDate,
@@ -114,20 +116,31 @@ const StockManagementForm = () => {
           branchCode: userData.branchCode,
           updatedQuantity: newQuantity,
         });
-
+  
         // Update inventory with the new quantity and last updated date
         await updateDoc(itemRef, {
           quantity: newQuantity,
           lastUpdated: entry.invoiceDate,
         });
+  
+        // Add an entry to the inventory history
+        await addDoc(historyRef, {
+          invoiceDate: entry.invoiceDate,
+          quantityAdded: entry.quantityToAdd,
+          
+          price: entry.price,
+          updatedQuantity: newQuantity,
+          updatedAt: new Date(),
+        });
       }
-
+  
       alert('Stocks updated successfully!');
       setStockEntries([]); // Clear the list of entries after submission
     } catch (error) {
       console.error('Error updating stock: ', error);
     }
   };
+  
 
   return (
     <div className="stock-management-container">

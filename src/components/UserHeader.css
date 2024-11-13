@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     padding: 10px 20px;
     box-shadow: 0px 0px 4px #A39D9D;
     position: fixed;
@@ -53,10 +53,11 @@
     height: fit-content;
     justify-content: left; /* Center align the logo */
     position: relative;
+    margin-left: 10px;
   }
   
   .header2-logo img {
-    height: 40px; /* Set a consistent height for the logo */
+    height: 50px; /* Set a consistent height for the logo */
   }
   
   .header2-links {

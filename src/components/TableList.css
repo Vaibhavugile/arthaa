@@ -1,10 +1,10 @@
 /* TableList.css */
 
-
 .table-list-container {
   display: flex;
-  background-color: #f9f9f9;
+  background-color: #fafafa;
   height: 100vh; /* Full viewport height */
+  transition: all 0.3s ease-in-out;
 }
 
 .sidebar-open .table-list-content {
@@ -18,105 +18,215 @@
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 28px;
   margin-bottom: 20px;
+  color: #333;
+  font-weight: 600;
 }
+
 .table-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
   gap: 20px; /* Space between table cards */
+  margin-top: 20px;
 }
 
 .table-card {
-  background-color: #f4f4f4; /* Default color for tables with no payment */
-  padding: 10px;
-  border-radius: 5px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
   margin: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  height:156px;
-  width:156px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 150px;
+  width: 150px;
+}
+
+.table-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .table-card.payment-due {
-  background-color: #f9d6d5; /* Color for tables with payments due */
+  background-color: #fce2e2; /* Soft red background for payment due */
 }
+
 .table-button1 {
-  background-color: #f4f4f4;
-  color: #000000;
+  background-color: #e0e0e0;
+  color: #333;
   border: none;
-  padding: 10px 20px;
-  margin-top: 10px;
+  padding: 12px 24px;
+  margin-top: 15px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
-.table-button1 :hover{
-  background-color: #f4f4f4;
-  color: #000000;
-  border: none;
-  padding: 10px 20px;
-  margin-top: 10px;
-  cursor: pointer;
-  border-radius: 5px;
+
+.table-button1:hover {
+  background-color: #d1d1d1;
+  transform: translateY(-5px);
 }
 
 .payment-button {
-  background-color: #218838;
-  color: #ffff;
+  background-color: #4CAF50; /* Green color for payment */
+  color: #fff;
   border: none;
-  padding: 10px 20px;
-  margin-top:80px;
+  padding: 12px 24px;
+  margin-top: 80px;
   cursor: pointer;
-  border-radius: 5px;
-  width: 156px;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .payment-button:hover {
-  background-color: #218838;
+  background-color: #45a049;
+  transform: translateY(-5px);
 }
 
+/* Modal Styles */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
+  padding: 10px;
 }
 
 .modal-content {
-  background-color: #fff;
-  border-radius: 8px;
+  background: #fff;
   padding: 20px;
-  width: 400px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
 }
 
-.save-payment-button, .close-modal-button {
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
+.modal-content h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.modal-content p,
+.modal-content ul {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.modal-content label {
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
   border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
-.save-payment-button {
-  background-color: #28a745;
+.modal-content input[type='number'] {
+  width: 50%;
+}
+
+.modal-content button {
+  background-color: #3498db;
   color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
 }
 
-.close-modal-button {
-  background-color: #dc3545;
-  color: white;
+.modal-content button:hover {
+  background-color: #2980b9;
 }
 
-.save-payment-button:hover {
-  background-color: #218838;
+.modal-content .cancel-btn {
+  background-color: #e74c3c;
 }
 
-.close-modal-button:hover {
-  background-color: #c82333;
+.modal-content .cancel-btn:hover {
+  background-color: #c0392b;
 }
 
+/* Payment Modal Adjustment */
+.modal-content .payment-method, .modal-content .payment-status {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.modal-content .payment-method label,
+.modal-content .payment-status label {
+  font-weight: bold;
+}
+
+.modal-content .payment-method input,
+.modal-content .payment-status input {
+  margin-right: 10px;
+}
+
+.modal-content .payment-method input[type="radio"],
+.modal-content .payment-status input[type="radio"] {
+  margin-top: 5px;
+}
+
+.modal-content .payment-method div,
+.modal-content .payment-status div {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Adjusted styles for the radio buttons */
+.modal-content input[type="radio"] {
+  width: auto;
+  margin-right: 10px;
+}
+
+/* Styling for the 'Due' input field */
+.modal-content input[type="text"] {
+  width: 100%;
+}
+
+/* Payment Method and Status Section */
+.modal-content .payment-method,
+.modal-content .payment-status {
+  margin-bottom: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

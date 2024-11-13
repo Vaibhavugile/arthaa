@@ -1,91 +1,193 @@
-/* Report.css */
-
-/* Container styles */
-.report-container {
-    max-width: 900px;
-    margin: 20px auto; /* Center the container */
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #f8f9fa; /* Light background */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-/* Heading styles */
-.report-container h2 {
-    text-align: center;
-    color: #343a40; /* Darker text color */
-    margin-bottom: 20px;
-}
-
-/* Table styles */
-table {
-    width: 100%;
-    border-collapse: collapse; /* Remove gaps between table cells */
-    margin-top: 10px;
-}
-
-th, td {
-    padding: 12px 15px; /* Spacing within cells */
-    text-align: left;
-    border-bottom: 1px solid #dee2e6; /* Light bottom border */
-}
-
-th {
-    background-color:#f4f4f4; /* Primary color for headers */
-    color: #000;; /* White text for headers */
-    font-weight: bold; /* Bold text */
-}
-
-tbody tr:hover {
-    background-color: #f1f1f1; /* Light gray background on hover */
-}
-
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Alternate row colors */
-}
-
-/* No data styles */
-.report-container p {
-    text-align: center;
-    color: #6c757d; /* Muted text color */
-    font-style: italic; /* Italicize the text */
-}
-
 /* payreport.css */
 
-/* Orders summary styles */
-.orders-summary {
+/* Overall layout */
+.report-container {
+    display: flex;
+    transition: margin-left 0.3s ease-in-out;
+  }
+  .report-container.sidebar-open .report-content {
+    margin-left: 250px; /* Adjust this value to fit your sidebar width */
+  }
+  
+  /* Sidebar styling */
+  .report-content {
+    flex: 1;
+    padding: 20px;
+    transition: margin-left 0.3s ease-in-out;
+    overflow-y: auto;
+  }
+  
+  /* Header styling */
+  h2 {
+    font-size: 24px;
+    color: #333;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Filter section */
+  .filter-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .filter-section label {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .filter-section input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: box-shadow 0.2s;
+  }
+  .filter-section input[type="date"]:focus {
+    box-shadow: 0 0 5px #007bff;
+    border-color: #007bff;
+  }
+  
+  /* Search bar */
+  .filter-section input[type="search"] {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: box-shadow 0.2s;
+  }
+  .filter-section input[type="search"]:focus {
+    box-shadow: 0 0 5px #007bff;
+    border-color: #007bff;
+  }
+  
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
+    animation: slideIn 0.5s ease-in-out;
+  }
+  table th,
+  table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+  }
+  table th {
+  
+    color: #555;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  table td {
+    font-size: 15px;
+    color: #333;
+  }
+  table tbody tr:hover {
+    background-color: #f4f4f4;
+    cursor: pointer;
+  }
+  
+  /* Totals summary */
+  .totals-summary {
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: #f9f9f9;
     padding: 15px;
-    border: 1px solid #007bff; /* Border color matching the header */
-    border-radius: 8px; /* Rounded corners */
-    background-color: #f9f9f9; /* Light background */
-}
-
-.orders-summary h3 {
-    margin-bottom: 10px;
-}
-
-.orders-summary ul {
-    list-style-type: none; /* Remove bullet points */
-    padding: 0; /* Remove default padding */
-}
-
-.orders-summary li {
-    margin-bottom: 5px; /* Space between list items */
-}
-
-.orders-summary button {
-    margin-top: 10px; /* Space above the button */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease-in-out;
+  }
+  .totals-summary:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Orders summary popup */
+  .orders-summary {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background:  #555;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: popUp 0.5s ease-out;
+  }
+  .orders-summary h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #fff;
+  }
+  .orders-summary button {
+    background: #ff6b6b;
+    color: #fff;
     padding: 8px 12px;
     border: none;
-    border-radius: 5px;
-    background-color: #007bff; /* Primary color */
-    color: white; /* White text */
-    cursor: pointer; /* Pointer cursor on hover */
-}
-
-.orders-summary button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
-}
-
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .orders-summary button:hover {
+    background: #ff4b4b;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes popUp {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .report-container.sidebar-open .report-content {
+      margin-left: 0;
+    }
+    table th, table td {
+      font-size: 14px;
+      padding: 8px 10px;
+    }
+    .totals-summary {
+      font-size: 14px;
+    }
+    .orders-summary {
+      bottom: 10px;
+      right: 10px;
+      padding: 15px;
+    }
+  }
+  

@@ -17,6 +17,7 @@ import VendorPaymentDashboard from './components/VendorDashboard';
 import { UserProvider } from './components/Auth/UserContext';
 import InventoryDashboard from './components/InventoryDashboard';
 import EditProduct from './components/Editproduct';
+import Dues from './components/DuesPage';
 // import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 // const theme = createTheme();
@@ -38,7 +39,7 @@ const App = () => (
                 <Route path="/add-vendor"element={<VendorForm />} />
                 <Route path="/add-stock"element={<StockManagementForm />} />
                 <Route path="/vendordashboard"element={<VendorPaymentDashboard/>} />
-                
+                <Route path ="/report/dues"element={<Dues/>} />
                 <Route path="/inventorydashboard"element={<InventoryDashboard/>} />
                  <Route path="/editproduct/:id" element={<EditProduct/>} />
                 {/* Add a catch-all route for 404 */}
