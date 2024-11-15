@@ -158,48 +158,51 @@ const OrdersReport = () => {
               </tr>
             </thead>
             <tbody>
-              {tables.map(table => (
-                <>
-                  {/* Current Orders */}
-                  {table.orders
-                    .filter(order => order.name.toLowerCase().includes(searchQuery))
-                    .map((order, index) => (
-                      <tr key={`${table.id}-order-${index}`}>
-                        <td>{table.tableNumber}</td>
-                        <td>-</td>
-                        <td>{order.quantity}</td>
-                        <td>{order.name}</td>
-                        <td>₹{parseFloat(order.price).toFixed(2)}</td>
-                        <td>₹{(order.quantity * parseFloat(order.price)).toFixed(2)}</td>
-                      </tr>
-                    ))}
+  {tables.map(table => (
+    <>
+      {/* Current Orders */}
+      {table.orders &&
+        table.orders
+          .filter(order => order.name.toLowerCase().includes(searchQuery))
+          .map((order, index) => (
+            <tr key={`${table.id}-order-${index}`}>
+              <td>{table.tableNumber}</td>
+              <td>-</td>
+              <td>{order.quantity}</td>
+              <td>{order.name}</td>
+              <td>₹{parseFloat(order.price).toFixed(2)}</td>
+              <td>₹{(order.quantity * parseFloat(order.price)).toFixed(2)}</td>
+            </tr>
+          ))}
 
-                  {/* Order History */}
-                  {table.orderHistory
-                    .filter(historyEntry => {
-                      const timestamp = historyEntry.payment?.timestamp || '';
-                      return (
-                        (!fromDate || timestamp >= fromDate) &&
-                        (!toDate || timestamp <= toDate)
-                      );
-                    })
-                    .map((historyEntry, index) => (
-                      historyEntry.orders
-                        .filter(order => order.name.toLowerCase().includes(searchQuery))
-                        .map((order, i) => (
-                          <tr key={`${table.id}-history-${index}-${i}`}>
-                            <td>{table.tableNumber}</td>
-                            <td>{historyEntry.payment?.timestamp || 'N/A'}</td>
-                            <td>{order.quantity}</td>
-                            <td>{order.name}</td>
-                            <td>₹{parseFloat(order.price).toFixed(2)}</td>
-                            <td>₹{(order.quantity * parseFloat(order.price)).toFixed(2)}</td>
-                          </tr>
-                        ))
-                    ))}
-                </>
-              ))}
-            </tbody>
+      {/* Order History */}
+      {table.orderHistory &&
+        table.orderHistory
+          .filter(historyEntry => {
+            const timestamp = historyEntry.payment?.timestamp || '';
+            return (
+              (!fromDate || timestamp >= fromDate) &&
+              (!toDate || timestamp <= toDate)
+            );
+          })
+          .map((historyEntry, index) => (
+            historyEntry.orders &&
+            historyEntry.orders
+              .filter(order => order.name.toLowerCase().includes(searchQuery))
+              .map((order, i) => (
+                <tr key={`${table.id}-history-${index}-${i}`}>
+                  <td>{table.tableNumber}</td>
+                  <td>{historyEntry.payment?.timestamp || 'N/A'}</td>
+                  <td>{order.quantity}</td>
+                  <td>{order.name}</td>
+                  <td>₹{parseFloat(order.price).toFixed(2)}</td>
+                  <td>₹{(order.quantity * parseFloat(order.price)).toFixed(2)}</td>
+                </tr>
+              ))
+          ))}
+    </>
+  ))}
+</tbody>
           </table>
         ) : (
           <p>Loading tables...</p>
